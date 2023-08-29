@@ -17,6 +17,12 @@ async function main() {
   const logScript = "git log " + latestRelease + "..HEAD " + format + endPart;
   const logs = await exec(logScript)
   console.log(`log data: ${logs}!`);
+
+  async function exec(command) {
+    const { stdout, stderr } = await util.promisify(child_process.exec)(command)
+    if (stderr) console.error(stderr)
+    return stdout.trim();
+  }
 }
 
 main();
