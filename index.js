@@ -7,14 +7,7 @@ async function main() {
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
-
-  //define git log script for easy debuggin, this will return data as json file
-  const format = ' --pretty=format:\'{"commit": "%h","author": "%aN","date": "%ad","message": "%f", "original_message": "%s"},\'';
-  const endPart = "$@ | perl -pe 'BEGIN{print \"[\"}; END{print \"]\"}' | perl -pe 's/},]/}]/'";
-
-  //get latest tag
-  const latestRelease = await exec('git describe --all --abbrev=0');
-  const logScript = "git log " + "..HEAD " + format + endPart;
+  const logScript = "git log -1 --pretty=format:%ce HEAD";
   const logs = await exec(logScript)
   console.log(`log data: ${logs}!`);
 
